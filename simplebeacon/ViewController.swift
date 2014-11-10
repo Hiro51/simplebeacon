@@ -11,9 +11,9 @@ import CoreLocation
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    
-    var beacons: [CLBeacon]
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView?
+    var beacons: [CLBeacon]?
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,8 +27,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
 }
 
-extension ViewController: UITableDataSource {
-    func tableView(tableView: UITableView!,
+extension ViewController: UITableViewDataSource {
+    func tableView(tableView: UITableView,
         numberOfRowsInSection section: Int) -> Int {
             if(beacons != nil) {
                 return beacons!.count
@@ -37,18 +37,19 @@ extension ViewController: UITableDataSource {
             }
     }
     
-    func tableView(tableView: UITableView!,
-        cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell {
+    func tableView(tableView: UITableView,
+        cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
             var cell:UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("MyIndentifier") as? UITableViewCell
             
             if(cell == nil){
                 cell = UITableViewCell(style:UITableViewCellStyle.Subtitle, reuseIdentifier: "MyIdentifier")
-                cell!.sectionStyle = UITableViewCellStyle.None
+                cell!.selectionStyle = UITableViewCellSelectionStyle.None
             }
             
-            let beacon: CLBeacon = beacons![indexPath.row]
+            let beacon:CLBeacon = beacons![indexPath.row]
             var proximityLabel:String! = ""
-            switch bracon.proximity {
+            
+            switch beacon.proximity {
             case CLProximity.Far:
                 proximityLabel = "Far"
             case CLProximity.Near:
@@ -65,9 +66,9 @@ extension ViewController: UITableDataSource {
                 "Minor: \(beacon.minor.integerValue)," +
                 "RSSI: \(beacon.rssi as Int)," +
                 "UUID: \(beacon.proximityUUID.UUIDString)"
-            cell!.detailTextLabel.text = detailLabel
+            cell!.detailTextLabel!.text = detailLabel
             
-            return cell
+            return cell!
     }
 }
 

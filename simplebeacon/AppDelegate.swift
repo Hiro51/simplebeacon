@@ -16,11 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var locationManager: CLLocationManager?
     var lastProximity: CLProximity?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
         
-        let uuid = "00000000-42FD-1001-B000-001C4D1BDF1F"
+        let uuidString = "00000000-42FD-1001-B000-001C4D1BDF1F"
         let beaconIdentifier = "iBeaconModules.us"
-        let beaconUUID:NSUUID = NSUUID(UUIDString: uuidString)
+        let beaconUUID: NSUUID = NSUUID(UUIDString: uuidString)!
         let beaconRegion:CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconUUID, identifier: beaconIdentifier)
         
         locationManager = CLLocationManager()
@@ -33,12 +33,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         locationManager!.startMonitoringForRegion(beaconRegion)
         locationManager!.startRangingBeaconsInRegion(beaconRegion)
-        locationManager!.startUpdatingLocation
+        locationManager!.startUpdatingLocation()
         
         if(application.respondsToSelector("registerUserNotificationSettings:")) {
             application.registerUserNotificationSettings(
                 UIUserNotificationSettings(
-                    forTypes: UserNotificationType.Alert | UIUserNotificationType.sound,
+                    forTypes: UIUserNotificationType.Alert | UIUserNotificationType.Sound,
                     categories: nil
                 )
             )
@@ -85,7 +85,7 @@ extension AppDelegate: CLLocationManagerDelegate {
         inRegion region: CLBeaconRegion!){
             let viewController:ViewController = window!.rootViewController as ViewController
             viewController.beacons = beacons as [CLBeacon]?
-            viewController.tableView.reloadData()
+            viewController.tableView!.reloadData()
             
             NSLog("didRangeBeacons");
             var message:String = ""
