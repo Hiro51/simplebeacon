@@ -13,6 +13,7 @@
 		4510F38E1A10D41F004F76AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4510F38D1A10D41F004F76AB /* Images.xcassets */; };
 		4510F3911A10D41F004F76AB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4510F38F1A10D41F004F76AB /* LaunchScreen.xib */; };
 		4510F39D1A10D41F004F76AB /* simplebeaconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4510F39C1A10D41F004F76AB /* simplebeaconTests.swift */; };
+		4510F3A71A10D456004F76AB /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4510F3A61A10D456004F76AB /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		4510F3961A10D41F004F76AB /* simplebeaconTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = simplebeaconTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4510F39B1A10D41F004F76AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4510F39C1A10D41F004F76AB /* simplebeaconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = simplebeaconTests.swift; sourceTree = "<group>"; };
+		4510F3A61A10D456004F76AB /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4510F3A71A10D456004F76AB /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +62,7 @@
 		4510F3781A10D41F004F76AB = {
 			isa = PBXGroup;
 			children = (
+				4510F3A61A10D456004F76AB /* CoreLocation.framework */,
 				4510F3831A10D41F004F76AB /* simplebeacon */,
 				4510F3991A10D41F004F76AB /* simplebeaconTests */,
 				4510F3821A10D41F004F76AB /* Products */,
@@ -161,6 +165,11 @@
 				TargetAttributes = {
 					4510F3801A10D41F004F76AB = {
 						CreatedOnToolsVersion = 6.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					4510F3951A10D41F004F76AB = {
 						CreatedOnToolsVersion = 6.1;
