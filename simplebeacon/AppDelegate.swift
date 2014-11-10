@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
     var window: UIWindow?
     var locationManager: CLLocationManager?
+    var lastProximity: CLProximity?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
@@ -80,13 +81,19 @@ extension AppDelegate: CLLocationManagerDelegate {
     }
     
     func locationManager(manager: CLLocationManager!,
-        didRangeBeacons beacons: AnyObject[]!,
+        didRangeBeacons beacons: [AnyObject]!,
         inRegion region: CLBeaconRegion!){
             NSLog("didRangeBeacons");
             var message:String = ""
             
             if(beacons.count > 0){
                 let nearestBeacon:CLBeacon = beacons[0] as CLBeacon
+                
+                if(nearestBeacon.proximity == lastProximity ||
+                    nearestBeacon.proximity == CLProximity.Unknown){
+                        return;
+                }
+                lastProximity = nearestBeacon.proximity;
                 
                 switch nearestBeacon.proximity {
                 case CLProximity.Far:
@@ -104,6 +111,24 @@ extension AppDelegate: CLLocationManagerDelegate {
             
             NSLog("%@", message)
             sendLocalNotificationWithMessage(message)
+    }
+    
+    func locationManager(manager: CLLocationManager!,
+        didEnterRegiion region:CLRegion!){
+            manager.startRangingBeaconsInRegion(region as CLBeaconRegion)
+            manager.startUpdatingLocation()
+            
+            NSLog("You entered the region")
+            sendLocalNotificationWithMessage("You entered the region.")
+    }
+    
+    func locationManager(manager: CLLocationManager!,
+        didExitRegion region: CLRegion!) {
+            manager.stopRangingBeaconsInRegion(region as CLBeaconRegion)
+            manager.stopUpdatingLocation()
+            
+            NSLog("You exited the region")
+            sendLocalNotificationWithMessage("You exited the region")
     }
     
 }
