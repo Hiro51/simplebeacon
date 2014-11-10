@@ -15,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var window: UIWindow?
     var locationManager: CLLocationManager?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         let uuid = "00000000-42FD-1001-B000-001C4D1BDF1F"
@@ -34,6 +33,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         locationManager!.startMonitoringForRegion(beaconRegion)
         locationManager!.startRangingBeaconsInRegion(beaconRegion)
         locationManager!.startUpdatingLocation
+        
+        if(application.respondsToSelector("registerUserNotificationSettings:")) {
+            application.registerUserNotificationSettings(
+                UIUserNotificationSettings(
+                    forTypes: UserNotificationType.Alert | UIUserNotificationType.sound,
+                    categories: nil
+                )
+            )
+        }
         
         // Override point for customization after application launch.
         return true
@@ -63,4 +71,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
 
 }
+
+extension AppDelegate: CLLocationManagerDelegate {
+    func sendLocalNotificationWithMessage(message: String!){
+        let notification: UILocalNotification = UILocalNotification()
+        notification.alertBody = message
+        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+    }
+    
+    func locationManager(manager: CLLocationManager!,
+        didRangeBeacons beacons: AnyObject[]!,
+        inRegion region: CLBeaconRegion!){
+            NSLog("didRangeBeacons");
+            var message:String = ""
+            
+            if(beacons.count > 0){
+                let nearestBeacon:CLBeacon = beacons[0] as CLBeacon
+                
+                switch nearestBeacon.proximity {
+                case CLProximity.Far:
+                    message = "You are far away from the beacon."
+                case CLProximity.Near:
+                    message = "You are near the beacon"
+                case CLProximity.Immediate:
+                    message = "You are in the immediate proximity of the beacon"
+                case CLProximity.Unknown:
+                    return
+                }
+            } else {
+                message = "No beacons are nearby."
+            }
+            
+            NSLog("%@", message)
+            sendLocalNotificationWithMessage(message)
+    }
+    
+}
+
+
+
 
